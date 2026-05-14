@@ -18,6 +18,8 @@ trait ProfileValidationRules
         return [
             'name' => $this->nameRules(),
             'email' => $this->emailRules($userId),
+            'department' => ['required', 'string', 'max:255'],
+            'role' => ['required', 'in:admin,staff'],
         ];
     }
 

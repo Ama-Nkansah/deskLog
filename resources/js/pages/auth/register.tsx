@@ -90,10 +90,39 @@ export default function Register({ passwordRules }: Props) {
                                 />
                             </div>
 
+                            <div className="grid gap-2">
+                                <Label htmlFor="department">Department</Label>
+                                <Input
+                                    id="department"
+                                    type="text"
+                                    required
+                                    tabIndex={5}
+                                    name="department"
+                                    placeholder="e.g. Applications Support"
+                                />
+                                <InputError message={errors.department} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="role">Role</Label>
+                                <select
+                                    id="role"
+                                    name="role"
+                                    required
+                                    tabIndex={6}
+                                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                                >
+                                    <option value="">Select role</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="staff">Staff</option>
+                                </select>
+                                <InputError message={errors.role} />
+                            </div>
+
                             <Button
                                 type="submit"
                                 className="mt-2 w-full"
-                                tabIndex={5}
+                                tabIndex={7}
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}

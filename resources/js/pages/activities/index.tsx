@@ -1,16 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
-import { dashboard } from '@/routes';
+import { Head, Link, router } from '@inertiajs/react';
 
 type ActivityLog = {
     id: number;
     status: 'done' | 'pending';
-    remark: string;
-    user: {
-        name: string;
-        department: string;
-        role: string;
-    };
-    created_at: string;
 };
 
 type Activity = {
@@ -26,7 +18,7 @@ type Activity = {
 
 type Props = {
     activities: Activity[];
-    date: string;
+    filters: { date?: string };
 };
 
 function latestStatus(logs: ActivityLog[]): 'done' | 'pending' | null {
@@ -34,20 +26,21 @@ function latestStatus(logs: ActivityLog[]): 'done' | 'pending' | null {
     return logs[logs.length - 1].status;
 }
 
-export default function Dashboard({ activities, date }: Props) {
-    const done = activities.filter((a) => latestStatus(a.logs) === 'done').length;
-    const pending = activities.filter((a) => latestStatus(a.logs) === 'pending').length;
-    const noUpdate = activities.filter((a) => latestStatus(a.logs) === null).length;
+export default function ActivitiesIndex({ activities, filters }: Props) {
+    function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+        router.get('/activities', { date: e.target.value }, { preserveState: true, replace: true });
+    }
+
+    function clearFilter() {
+        router.get('/activities', {}, { preserveState: true, replace: true });
+    }
 
     return (
         <>
-            <Head title="Dashboard" />
+            <Head title="Activities" />
             <div className="flex flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-semibold">Dashboard</h1>
-                        <p className="text-sm text-muted-foreground">Activities for {date}</p>
-                    </div>
+                    <h1 className="text-2xl font-semibold">Activities</h1>
                     <Link
                         href="/activities/create"
                         className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
@@ -56,28 +49,26 @@ export default function Dashboard({ activities, date }: Props) {
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
-                    <div className="rounded-xl border p-4">
-                        <p className="text-sm text-muted-foreground">Total</p>
-                        <p className="mt-1 text-3xl font-bold">{activities.length}</p>
-                    </div>
-                    <div className="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-900 dark:bg-green-950">
-                        <p className="text-sm text-green-700 dark:text-green-400">Done</p>
-                        <p className="mt-1 text-3xl font-bold text-green-700 dark:text-green-400">{done}</p>
-                    </div>
-                    <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-900 dark:bg-yellow-950">
-                        <p className="text-sm text-yellow-700 dark:text-yellow-400">Pending</p>
-                        <p className="mt-1 text-3xl font-bold text-yellow-700 dark:text-yellow-400">{pending + noUpdate}</p>
-                    </div>
+                <div className="flex items-center gap-3">
+                    <input
+                        type="date"
+                        defaultValue={filters.date ?? ''}
+                        onChange={handleDateChange}
+                        className="rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    {filters.date && (
+                        <button
+                            onClick={clearFilter}
+                            className="text-sm text-muted-foreground underline"
+                        >
+                            Clear filter
+                        </button>
+                    )}
                 </div>
 
                 {activities.length === 0 ? (
                     <div className="rounded-xl border border-dashed p-12 text-center text-muted-foreground">
-                        No activities for today yet.{' '}
-                        <Link href="/activities/create" className="underline">
-                            Add one
-                        </Link>
-                        .
+                        No activities found.
                     </div>
                 ) : (
                     <div className="flex flex-col gap-3">
@@ -95,7 +86,7 @@ export default function Dashboard({ activities, date }: Props) {
                                             <p className="text-sm text-muted-foreground">{activity.description}</p>
                                         )}
                                         <p className="mt-1 text-xs text-muted-foreground">
-                                            Created by {activity.creator.name}
+                                            {activity.activity_date} &middot; {activity.creator.name}
                                         </p>
                                     </div>
                                     <span
@@ -117,11 +108,9 @@ export default function Dashboard({ activities, date }: Props) {
     );
 }
 
-Dashboard.layout = {
+ActivitiesIndex.layout = {
     breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-        },
+        { title: 'Dashboard', href: '/dashboard' },
+        { title: 'Activities', href: '/activities' },
     ],
 };

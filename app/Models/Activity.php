@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
 {
-    protected $fillable = ['title', 'description', 'created_by'];
+    protected $fillable = ['title', 'description', 'activity_date', 'created_by'];
+
+    protected $casts = [
+        'activity_date' => 'date',
+    ];
 
     public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -15,6 +19,6 @@ class Activity extends Model
 
     public function logs(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ActivityLog::class);
+        return $this->hasMany(ActivityLog::class)->oldest();
     }
 }

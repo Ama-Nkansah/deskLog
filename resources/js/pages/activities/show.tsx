@@ -117,7 +117,7 @@ export default function ShowActivity({ activity }: Props) {
                                 value={data.status}
                                 onChange={(e) => setData('status', e.target.value as 'done' | 'pending')}
                                 required
-                                className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="w-full rounded-md border bg-background text-foreground px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 <option value="">Select status</option>
                                 <option value="pending">Pending</option>

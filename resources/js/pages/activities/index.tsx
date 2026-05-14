@@ -1,4 +1,5 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import type { Auth } from '@/types';
 
 type ActivityLog = {
     id: number;
@@ -27,6 +28,9 @@ function latestStatus(logs: ActivityLog[]): 'done' | 'pending' | null {
 }
 
 export default function ActivitiesIndex({ activities, filters }: Props) {
+    const { auth } = usePage().props as { auth: Auth };
+    const isAdmin = auth.user.role === 'admin';
+
     function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
         router.get('/activities', { date: e.target.value }, { preserveState: true, replace: true });
     }
@@ -41,12 +45,14 @@ export default function ActivitiesIndex({ activities, filters }: Props) {
             <div className="flex flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Activities</h1>
-                    <Link
-                        href="/activities/create"
-                        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                    >
-                        + New Activity
-                    </Link>
+                    {isAdmin && (
+                        <Link
+                            href="/activities/create"
+                            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                        >
+                            + New Activity
+                        </Link>
+                    )}
                 </div>
 
                 <div className="flex items-center gap-3">

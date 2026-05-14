@@ -1,5 +1,6 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { dashboard } from '@/routes';
+import type { Auth } from '@/types';
 
 type ActivityLog = {
     id: number;
@@ -35,6 +36,8 @@ function latestStatus(logs: ActivityLog[]): 'done' | 'pending' | null {
 }
 
 export default function Dashboard({ activities, date }: Props) {
+    const { auth } = usePage().props as { auth: Auth };
+    const isAdmin = auth.user.role === 'admin';
     const done = activities.filter((a) => latestStatus(a.logs) === 'done').length;
     const pending = activities.filter((a) => latestStatus(a.logs) === 'pending').length;
     const noUpdate = activities.filter((a) => latestStatus(a.logs) === null).length;
@@ -48,12 +51,14 @@ export default function Dashboard({ activities, date }: Props) {
                         <h1 className="text-2xl font-semibold">Dashboard</h1>
                         <p className="text-sm text-muted-foreground">Activities for {date}</p>
                     </div>
-                    <Link
-                        href="/activities/create"
-                        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                    >
-                        + New Activity
-                    </Link>
+                    {isAdmin && (
+                        <Link
+                            href="/activities/create"
+                            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                        >
+                            + New Activity
+                        </Link>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">

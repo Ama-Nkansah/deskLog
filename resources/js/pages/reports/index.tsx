@@ -100,7 +100,7 @@ export default function Reports({ activities, filters }: Props) {
                                 id="status"
                                 value={data.status}
                                 onChange={(e) => setData('status', e.target.value)}
-                                className="rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="rounded-md border bg-background text-foreground px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 <option value="">All statuses</option>
                                 <option value="pending">Pending</option>

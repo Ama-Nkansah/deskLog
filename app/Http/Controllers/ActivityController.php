@@ -26,11 +26,15 @@ class ActivityController extends Controller
 
     public function create(): Response
     {
+        abort_unless(auth()->user()->isAdmin(), 403);
+
         return Inertia::render('activities/create');
     }
 
     public function store(Request $request): RedirectResponse
     {
+        abort_unless(auth()->user()->isAdmin(), 403);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],

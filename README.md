@@ -20,11 +20,11 @@ Support teams deal with many recurring tasks every day checking SMS counts, moni
 | Feature | Description |
 |---|---|
 | Activity management | Create daily activities with a title, description, and date |
-| Status updates | Log status changes (done / pending) with a remark — every update is preserved, nothing is overwritten |
+| Status updates | Log status changes (done / pending) with a remark every update is preserved, nothing is overwritten |
 | Bio capture | Every update records who made it, which department they are in, and the exact time |
 | Daily view | A handover page showing all activities and their full update timeline for any selected date |
 | Reports | Filter activity history by date range and status |
-| Authentication | All pages require login — built with Laravel Fortify |
+| Authentication | All pages require login built with Laravel Fortify |
 
 ---
 

@@ -2,13 +2,11 @@ FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
-    libonig-dev \
-    libxml2-dev \
     nodejs \
     npm \
     unzip \
     git \
-    && docker-php-ext-install pdo pdo_sqlite mbstring fileinfo tokenizer xml ctype
+    && docker-php-ext-install pdo pdo_sqlite
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

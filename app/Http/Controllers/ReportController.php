@@ -28,7 +28,16 @@ class ReportController extends Controller
         }
 
         if (!empty($validated['status'])) {
-            $query->whereHas('logs', fn($q) => $q->where('status', $validated['status']));
+            $status = $validated['status'];
+            $query->whereHas('logs', function ($q) use ($status) {
+                $q->where('status', $status)
+                  ->whereNotExists(
+                      fn ($sub) => $sub->selectRaw('1')
+                          ->from('activity_logs as newer')
+                          ->whereColumn('newer.activity_id', 'activity_logs.activity_id')
+                          ->whereColumn('newer.id', '>', 'activity_logs.id')
+                  );
+            });
         }
 
         $activities = (isset($validated['from']) || isset($validated['to']))

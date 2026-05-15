@@ -2,6 +2,8 @@ FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
+    libonig-dev \
+    libxml2-dev \
     nodejs \
     npm \
     unzip \

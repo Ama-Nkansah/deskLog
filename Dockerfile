@@ -38,8 +38,7 @@ COPY . .
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-COPY scripts/00-laravel-deploy.sh /entrypoint.d/00-laravel-deploy.sh
-RUN chmod +x /entrypoint.d/00-laravel-deploy.sh
+COPY --chmod=755 scripts/00-laravel-deploy.sh /etc/entrypoint.d/00-laravel-deploy.sh
 
 # Drop back to unprivileged user for runtime
 USER www-data

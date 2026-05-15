@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->date('activity_date')->after('description')->default(now()->toDateString());
+            $table->date('activity_date')->default(now()->toDateString());
         });
     }
 

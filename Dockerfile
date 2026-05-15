@@ -3,9 +3,10 @@
 FROM composer:2 AS php-builder
 WORKDIR /app
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 COPY . .
-RUN touch database/database.sqlite \
+RUN php artisan package:discover --ansi \
+    && touch database/database.sqlite \
     && cp .env.example .env \
     && php artisan key:generate --force \
     && php artisan wayfinder:generate --with-form

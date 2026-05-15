@@ -26,6 +26,7 @@ export default defineConfig({
         tailwindcss(),
         wayfinder({
             formVariants: true,
+            ...(process.env.BUILD_ENV === 'docker' ? { command: 'true' } : {}),
         }),
     ],
 });

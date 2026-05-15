@@ -5,7 +5,7 @@ RUN npm ci
 COPY resources/ resources/
 COPY public/ public/
 COPY vite.config.ts tsconfig.json ./
-RUN npm run build
+RUN BUILD_ENV=docker npm run build
 
 FROM richarvey/nginx-php-fpm:3.1.6
 COPY . .

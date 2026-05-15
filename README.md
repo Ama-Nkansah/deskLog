@@ -52,7 +52,7 @@ Support teams deal with many recurring tasks every day checking SMS counts, moni
 ```bash
 # Clone the repository
 git clone <repo-url>
-cd npontu-tracker
+cd desklog
 
 # Install PHP dependencies
 composer install

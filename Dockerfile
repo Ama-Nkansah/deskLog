@@ -18,6 +18,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 RUN npm install && npm run build
 
+RUN cp .env.example .env && php artisan key:generate --force
+
 RUN chmod -R 775 storage bootstrap/cache && chmod +x start.sh
 
 EXPOSE 8000

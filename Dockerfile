@@ -28,20 +28,26 @@ RUN BUILD_ENV=docker npm run build
 FROM serversideup/php:8.4-fpm-nginx-alpine-v3.5.2
 WORKDIR /var/www/html
 
+# serversideup images run as www-data by default; switch to root for build-time setup
+USER root
+
 COPY --from=php-builder /app/vendor vendor/
 COPY --from=node-builder /app/public/build public/build
 COPY . .
-
-ENV NGINX_WEBROOT=/var/www/html/public
-ENV PHP_OPCACHE_ENABLE=1
-ENV APP_ENV=production
-ENV APP_DEBUG=false
-ENV LOG_CHANNEL=stderr
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 COPY scripts/00-laravel-deploy.sh /entrypoint.d/00-laravel-deploy.sh
 RUN chmod +x /entrypoint.d/00-laravel-deploy.sh
+
+# Drop back to unprivileged user for runtime
+USER www-data
+
+ENV NGINX_WEBROOT=/var/www/html/public
+ENV PHP_OPCACHE_ENABLE=1
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV LOG_CHANNEL=stderr
 
 EXPOSE 8080

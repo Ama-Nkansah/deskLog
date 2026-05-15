@@ -18,8 +18,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 RUN npm install && npm run build
 
-RUN chmod -R 775 storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache && chmod +x start.sh
 
 EXPOSE 8000
 
-CMD touch database/database.sqlite && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$((${PORT:-8000}))
+CMD ["sh", "start.sh"]

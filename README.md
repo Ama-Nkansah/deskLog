@@ -84,11 +84,12 @@ The app will be available at `http://localhost:8000`.
 | `staff` | Log in, view activities, add status updates |
 | `admin` | Everything staff can do, plus create new activities |
 
-New registrations default to `staff`. Roles are assigned directly in the database.
+Roles are selected from a dropdown during registration.
 
 ---
 
 ## Deployment
+
 
 The app is deployed on [Render](https://render.com) using Docker.
 
